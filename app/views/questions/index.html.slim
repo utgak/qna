@@ -1,0 +1,8 @@
+table
+  - @questions.each do |q|
+    tr
+      td= link_to q.title, q
+      - if current_user&.author_of?(q)
+        td= link_to 'delete', question_path(q), method: :delete
+
+p= link_to 'Ask question', new_question_path
