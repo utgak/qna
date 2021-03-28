@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 feature 'User can inspect all questions' do
+  background { sign_in(create(:user)) }
+
   scenario 'inspect all questions' do
-    list = create_list(:question, 3)
-    sign_in(create(:user))
+    create_list(:question, 3)
     visit questions_path
     expect(page).to have_content attributes_for(:question)[:title] * 3
   end
@@ -12,7 +13,6 @@ feature 'User can inspect all questions' do
     question = create(:question)
     user = create(:user)
     3.times { question.answers.create(question: question, user: user, body: 'answer_body') }
-    sign_in(create(:user))
     visit question_path(question)
 
     expect(page).to have_content 'answer_body' * 3
