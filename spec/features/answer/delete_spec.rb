@@ -8,13 +8,29 @@ feature 'User can delete his answer', %q{
 
   given(:answer) {create(:answer)}
 
-  scenario 'Authenticated user deletes the answer' do
+  scenario 'Authenticated user deletes his answer' do
     sign_in(answer.user)
     visit question_path(answer.question)
 
+    expect(page).to have_content answer.body
 
     click_on 'delete'
 
     expect(page).to_not have_content answer.body
+  end
+
+  scenario 'Authenticated user deletes not his answer' do
+    sign_in(create(:user))
+    visit question_path(answer.question)
+
+    expect(page).to have_content answer.body
+    expect(page).to_not have_link "delete"
+  end
+
+  scenario 'Not authenticated user deletes the answer' do
+    visit question_path(answer.question)
+
+    expect(page).to have_content answer.body
+    expect(page).to_not have_link "delete"
   end
 end

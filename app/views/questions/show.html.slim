@@ -5,7 +5,8 @@ table
   - @question.answers.each do |a|
     tr
       td= a.body
-      td= link_to 'delete', "/questions/#{a.id}/answers/#{a.id}", method: :delete if a.user == current_user
+      -if current_user&.author_of?(a) && a.valid?
+        td= link_to 'delete', answer_path(a), method: :delete
 
 = render 'shared/errors', resource: @answer
 
