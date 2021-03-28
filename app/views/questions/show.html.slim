@@ -1,0 +1,16 @@
+h1= @question.title
+p= @question.body
+
+table
+  - @question.answers.each do |a|
+    tr
+      td= a.body
+      td= link_to 'delete', "/questions/#{a.id}/answers/#{a.id}", method: :delete if a.user == current_user
+
+= render 'shared/errors', resource: @answer
+
+- if signed_in?
+  = form_with model: [@question, @question.answers.new], local: true do |f|
+    = f.label :body, 'Give an answer'
+    = f.text_area :body
+    = f.submit 'Answer'
