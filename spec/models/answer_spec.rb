@@ -22,5 +22,14 @@ RSpec.describe Answer, type: :model do
 
       expect(question.answers.where(best: true).length).to eq 1
     end
+
+    it 'check that the best answer is first' do
+      question = create(:question)
+      user = create(:user)
+      2.times { question.answers.create(question: question, user: user, body: 'answer_body') }
+      question.answers.last.mark_as_best
+
+      expect(question.answers.first.best).to eq true
+    end
   end
 end
