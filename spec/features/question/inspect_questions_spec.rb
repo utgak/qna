@@ -12,10 +12,10 @@ feature 'User can inspect all questions' do
   scenario 'User can inspect question and answers' do
     question = create(:question)
     user = create(:user)
-    3.times { question.answers.create(question: question, user: user, body: 'answer_body') }
+    question.answers.create(question: question, user: user, body: 'answer_body')
     visit question_path(question)
 
-    expect(page).to have_content 'answer_body' * 3
+    expect(page).to have_content 'answer_body'
     expect(page).to have_content question.title
     expect(page).to have_content question.body
   end
