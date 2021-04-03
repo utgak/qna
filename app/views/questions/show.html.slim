@@ -1,6 +1,9 @@
 h1= @question.title
 p= @question.body
 
+.files
+  = render "file/file", resource: @question
+
 .answers
   = render @question.answers
 
@@ -8,6 +11,11 @@ p= @question.body
   = render 'shared/errors', resource: @answer
 
 = form_with model: [@question, @question.answers.new], class: "new-answer", local: false do |f|
-  = f.label :body, 'Give an answer'
-  = f.text_area :body
+  p
+    = f.label :body, 'Give an answer'
+    = f.text_area :body
+  p
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
   = f.submit 'Answer'
+

@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  resources :file, only: :destroy
+
   resources :questions do
     resources :answers, shallow: true do
       patch :best, on: :member

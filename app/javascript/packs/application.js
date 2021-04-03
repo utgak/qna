@@ -10,7 +10,6 @@ import "channels"
 import("jquery")
 require('packs/answers.js')
 
-
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
