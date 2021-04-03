@@ -7,7 +7,9 @@ class Answer < ApplicationRecord
   default_scope { order(best: :desc) }
 
   def mark_as_best
-    self.question.answers.where(best: true).first&.update!(best: false)
-    self.update!(best: true)
+    Answer.transaction do
+      self.question.answers.where(best: true).first&.update!(best: false)
+      self.update!(best: true)
+    end
   end
 end

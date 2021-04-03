@@ -10,7 +10,7 @@ RSpec.describe Answer, type: :model do
     let!(:answer) { create(:answer) }
     it 'check best method' do
       answer.mark_as_best
-      expect(answer.best).to eq true
+      expect(answer).to be_best
     end
 
     it 'check that only one answer is best' do
