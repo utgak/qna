@@ -1,0 +1,17 @@
+.answer data-id= answer.id
+  p
+    -if answer.best
+      =render plain: 'This answer marked as the best'
+
+  p= answer.body
+
+  - if current_user&.author_of?(answer.question)
+    = link_to 'Set as best', best_answer_path(answer), method: :patch, remote: true
+
+  -if current_user&.author_of?(answer) && answer.valid?
+    = link_to 'delete', answer_path(answer), method: :delete, remote: true
+    = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|
+      = f.label :body, 'Give an answer'
+      = f.text_area :body
+      = f.submit 'Save'

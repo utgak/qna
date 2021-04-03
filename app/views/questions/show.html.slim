@@ -1,16 +1,13 @@
 h1= @question.title
 p= @question.body
 
-table
-  - @question.answers.each do |a|
-    tr
-      td= a.body
-      -if current_user&.author_of?(a) && a.valid?
-        td= link_to 'delete', answer_path(a), method: :delete
+.answers
+  = render @question.answers
 
-= render 'shared/errors', resource: @answer
+.answer-errors
+  = render 'shared/errors', resource: @answer
 
-= form_with model: [@question, @question.answers.new], local: true do |f|
+= form_with model: [@question, @question.answers.new], class: "new-answer", local: false do |f|
   = f.label :body, 'Give an answer'
   = f.text_area :body
   = f.submit 'Answer'
