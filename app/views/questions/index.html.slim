@@ -4,5 +4,6 @@ table
       td= link_to q.title, q
       - if current_user&.author_of?(q)
         td= link_to 'delete', question_path(q), method: :delete
+        td= link_to 'edit', edit_question_path(q), method: :get
 
 p= link_to 'Ask question', new_question_path
