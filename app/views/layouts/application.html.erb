@@ -12,8 +12,10 @@
 
   <body>
     <h3>
+      <%= link_to 'QnA', root_path %>
       <%= link_to 'sign_up', new_user_registration_path, method: :get unless signed_in? %>
       <%= link_to 'sign_in', new_user_session_path, method: :get unless signed_in? %>
+      <%= link_to 'My rewards', rewards_path, method: :get if signed_in? %>
       <%= link_to 'logout', destroy_user_session_path, method: :delete if signed_in? %>
     </h3>
     <p class="notice"><%= notice %></p>

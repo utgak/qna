@@ -4,18 +4,43 @@ p= @question.body
 .files
   = render "file/file", resource: @question
 
+.question_links
+  p
+  ul
+    - @question.links.each do |link|
+      .link-list data-link-id= link.id
+        -if link.url.include? 'https://gist.github.com/'
+          script src="#{link.url}.js"
+        -else
+          li
+            = link_to link.name, link.url, target: :_blank
+            -if current_user.author_of?(link.linkable)
+              = link_to 'delete link', link_path(link), method: :delete, remote: true
+
+.reward
+  - unless @reward.nil?
+    p Reward:
+    = @reward.name
+    = image_tag(@reward.img)
+
 .answers
   = render @question.answers
 
 .answer-errors
   = render 'shared/errors', resource: @answer
 
-= form_with model: [@question, @question.answers.new], class: "new-answer", local: false do |f|
+= form_with model: [@question, @answer], class: "new-answer", local: false do |f|
   p
     = f.label :body, 'Give an answer'
     = f.text_area :body
   p
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
-  = f.submit 'Answer'
 
+    h5 Links:
+    #links
+      = f.fields_for :links do |link|
+        = render 'link_fields', f: link
+      .links
+        = link_to_add_association 'add link', f, :links
+  = f.submit 'Answer'

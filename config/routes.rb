@@ -5,6 +5,10 @@ Rails.application.routes.draw do
 
   resources :file, only: :destroy
 
+  resources :links, only: :destroy
+
+  resources :rewards, only: :index
+
   resources :questions do
     resources :answers, shallow: true do
       patch :best, on: :member

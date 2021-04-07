@@ -3,8 +3,11 @@ require 'rails_helper'
 RSpec.describe Answer, type: :model do
   it { should belong_to :question }
   it { should belong_to :user }
+  it { should have_many(:links).dependent(:destroy) }
 
   it { should validate_presence_of :body }
+
+  it { should accept_nested_attributes_for :links }
 
   it "have many attached files" do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
@@ -34,6 +37,12 @@ RSpec.describe Answer, type: :model do
       question.answers.last.mark_as_best
 
       expect(question.answers.first.best).to eq true
+    end
+
+    it 'reward user' do
+      reward = Reward.create(name: 'reward name', question: answer.question)
+      answer.mark_as_best
+      expect(answer.user.rewards.first).to eq reward
     end
   end
 end

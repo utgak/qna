@@ -5,6 +5,18 @@
 
   p= answer.body
 
+  .answer_links
+    - answer.links.each do |link|
+      .link-list data-link-id= link.id
+        - if link.url.include? 'https://gist.github.com/'
+          script src="#{link.url}.js"
+          =link_to 'delete link', link_path(link), method: :delete, remote: true
+        - else
+          li
+            =link_to link.name, link.url, target: :_blank, remote: true
+            -if current_user.author_of?(link.linkable)
+              =link_to 'delete link', link_path(link), method: :delete, remote: true
+
   .files
     = render "file/file", resource: answer
 
@@ -21,4 +33,6 @@
       p
         = f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
+        .links
+          = link_to_add_association 'add link', f, :links
       = f.submit 'Save'
