@@ -40,7 +40,7 @@ RSpec.describe Answer, type: :model do
     end
 
     it 'reward user' do
-      reward = Reward.create(name: 'reward name', question: answer.question)
+      reward = create(:reward, question: answer.question)
       answer.mark_as_best
       expect(answer.user.rewards.first).to eq reward
     end
