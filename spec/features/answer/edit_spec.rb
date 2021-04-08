@@ -7,6 +7,7 @@ feature 'User can edit his answer', %q{
 } do
 
   given!(:answer) { create(:answer) }
+  given(:google) { 'https://www.google.com/' }
 
   scenario 'Unauthenticated can not edit answer' do
     visit question_path(answer.question)
@@ -60,6 +61,23 @@ feature 'User can edit his answer', %q{
       end
       expect(page).to have_content "Body can't be blank"
     end
+
+    scenario 'edits his answer and add link', js: true do
+      sign_in answer.user
+      visit question_path(answer.question)
+
+      click_on 'Edit'
+
+
+      within '.answers' do
+        click_on 'add link'
+        fill_in 'Link name', with: 'google'
+        fill_in 'Url', with: google
+        click_on 'Save'
+        page.should have_link 'google'
+      end
+    end
+
 
     scenario "tries to edit other user's question", js: true do
       sign_in create(:user)
