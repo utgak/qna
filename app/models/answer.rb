@@ -17,7 +17,7 @@ class Answer < ApplicationRecord
       self.question.answers.where(best: true).first&.update!(best: false)
       self.update!(best: true)
       unless question.reward.nil?
-        self.question.reward.update(user: user)
+        self.question.reward.update!(user: user)
       end
     end
   end
