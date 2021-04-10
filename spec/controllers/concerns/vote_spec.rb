@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples 'votable' do
+RSpec.shared_examples 'votable controller' do
   describe 'vote' do
     let!(:votable) { create(controller.controller_name.singularize) }
     before { login(create(:user))}
@@ -40,9 +40,9 @@ RSpec.shared_examples 'votable' do
 end
 
 RSpec.describe AnswersController, type: :controller do
-  it_behaves_like 'votable'
+  it_behaves_like 'votable controller'
 end
 
 RSpec.describe QuestionsController, type: :controller do
-  it_behaves_like 'votable'
+  it_behaves_like 'votable controller'
 end
