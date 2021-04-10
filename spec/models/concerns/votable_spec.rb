@@ -5,12 +5,12 @@ RSpec.shared_examples 'votable' do
 
   it 'vote' do
     3.times { votable.vote_up(create(:user)) }
-    expect(votable.votes.where(option: 'up').count).to eq 3
+    expect(votable.votes.where(value: 1).count).to eq 3
   end
 
   it 'down vote' do
     5.times { votable.vote_down(create(:user)) }
-    expect(votable.votes.where(option: 'down').count).to eq 5
+    expect(votable.votes.where(value: -1).count).to eq 5
   end
 
   it 'result' do
@@ -30,8 +30,8 @@ RSpec.shared_examples 'votable' do
   it 'vote 2 times' do
     user = (create(:user))
     votable.vote_up(user)
-    error = votable.vote_up(user)
-    expect(error.full_message).to eq "User have already voted"
+    votable.vote_up(user)
+    expect(votable.errors.full_messages.first).to eq "User have already voted"
   end
 end
 

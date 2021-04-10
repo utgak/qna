@@ -12,9 +12,7 @@
           = link_to 'edit', edit_question_path(q), method: :get
       - if current_user
         p
-          = link_to '+', vote_up_question_path(q), method: :patch, remote: true
-          .voting-result = q.voting_result
-          = link_to '-', vote_down_question_path(q), method: :patch, remote: true
+          = render 'shared/voting', resource: q
         hr
 
 p= link_to 'Ask question', new_question_path

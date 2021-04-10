@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.shared_examples 'votable controller' do
+shared_examples 'votable controller' do
   describe 'vote' do
     let!(:votable) { create(controller.controller_name.singularize) }
-    before { login(create(:user))}
+    before { login(create(:user)) }
 
     it 'vote_up' do
       patch :vote_up, params: { id: votable, format: :json }
@@ -23,8 +23,6 @@ RSpec.shared_examples 'votable controller' do
       patch :vote_down, params: { id: votable, format: :json }
       expect(votable.voting_result).to eq(-1)
       patch :vote_up, params: { id: votable, format: :json }
-
-
       expect(votable.voting_result).to eq(1)
       expect(JSON.parse(response.body)['result']).to eq(1)
     end
@@ -35,7 +33,17 @@ RSpec.shared_examples 'votable controller' do
 
       expect(JSON.parse(response.body)[0]).to eq 'User have already voted'
     end
+  end
 
+  describe 'not vote' do
+    let(:votable) { create(controller.controller_name.singularize) }
+    before { login(votable.user) }
+
+    it 'user cannot vote for his votable' do
+      patch :vote_up, params: { id: votable, format: :json }
+
+      expect(votable.voting_result).to eq 0
+    end
   end
 end
 

@@ -1,0 +1,4 @@
+- if !current_user&.author_of?(resource) && user_signed_in?
+  = link_to '+', polymorphic_path([:vote_up, resource]), method: :patch, remote: true
+  .voting-result  = resource.voting_result
+  = link_to '-', polymorphic_path([:vote_down, resource]), method: :patch, remote: true

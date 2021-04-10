@@ -6,32 +6,20 @@ module Votable
   end
   
   def vote_up(user)
-    if votes.where(user: user, option: 'up').exists?
-      errors.add :user, :user_not_uniq, message: 'have already voted'
-    else
-      transaction do
-        previous_vote = votes.where(user: user, option: 'down')
-
-        previous_vote.first.destroy! if previous_vote.exists?
-        votes.create!(user: user, option: 'up')
-      end
+    transaction do
+      votes.where(user: user, value: -1).first&.destroy!
+      votes.create!(user: user, value: 1)
     end
   end
 
   def vote_down(user)
-    if votes.where(user: user, option: 'down').exists?
-      errors.add :user, :user_not_uniq, message: 'have already voted'
-    else
-      transaction do
-        previous_vote = votes.where(user: user, option: 'up')
-
-        previous_vote.first.destroy! if previous_vote.exists?
-        votes.create!(user: user, option: 'down')
-      end
+    transaction do
+      votes.where(user: user, value: 1).first&.destroy!
+      votes.create!(user: user, value: -1)
     end
   end
 
   def voting_result
-    votes.where(option: 'up').count - votes.where(option: 'down').count
+    votes.sum(:value)
   end
 end

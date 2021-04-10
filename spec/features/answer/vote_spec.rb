@@ -38,4 +38,18 @@ feature 'User can vote for answer', js: true do
       end
     end
   end
+
+  describe "User" do
+    given(:answer) { create(:answer) }
+    background do
+      sign_in(answer.user)
+
+      visit question_path(answer.question)
+    end
+    scenario 'can not vote for his own answer' do
+      expect(page).to have_content answer.body
+      expect(page).to_not have_link '+'
+      expect(page).to_not have_link '-'
+    end
+  end
 end

@@ -4,7 +4,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:user) { create(:user) }
 
-
   describe 'POST #create' do
     before { login(user) }
     context 'with valid attributes' do
@@ -65,7 +64,6 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question) }
     before {login(answer.user)}
 
-
     context 'with valid attributes' do
       it 'changes answer attributes' do
         patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
@@ -96,7 +94,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #best' do
     context 'author of question' do
       let!(:answer) { create(:answer, question: question) }
-      before {login(question.user)}
+      before { login(question.user) }
       it 'mark answer as the best' do
         patch :best, params: { id: answer, format: :js }
         answer.reload
@@ -107,12 +105,11 @@ RSpec.describe AnswersController, type: :controller do
         patch :best, params: { id: answer, format: :js }
         expect(response).to render_template :best
       end
-
     end
 
     context 'not author of question' do
       let!(:answer) { create(:answer, question: question) }
-      before {login(create(:user))}
+      before { login(create(:user)) }
       it 'mark answer as the best' do
         patch :best, params: { id: answer, format: :js }
         answer.reload
@@ -123,7 +120,6 @@ RSpec.describe AnswersController, type: :controller do
         patch :best, params: { id: answer, format: :js }
         expect(response).to render_template :best
       end
-
     end
 
     context 'unauthorized user' do

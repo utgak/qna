@@ -24,10 +24,7 @@
     = link_to 'Set as best', best_answer_path(answer), method: :patch, remote: true
 
   p
-    - if current_user
-      = link_to '+', vote_up_answer_path(answer), method: :patch, remote: true
-      .voting-result  = answer.voting_result
-      = link_to '-', vote_down_answer_path(answer), method: :patch, remote: true
+    = render 'shared/voting', resource: answer
 
   -if current_user&.author_of?(answer) && answer.valid?
     = link_to 'delete', answer_path(answer), method: :delete, remote: true
