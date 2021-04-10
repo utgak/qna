@@ -4,9 +4,14 @@ feature 'User can inspect all questions' do
   background { sign_in(create(:user)) }
 
   scenario 'inspect all questions' do
-    create_list(:question, 3)
+    create(:question, title: 'title1')
+    create(:question, title: 'title2')
+    create(:question, title: 'title3')
+
     visit questions_path
-    expect(page).to have_content attributes_for(:question)[:title] * 3
+    expect(page).to have_content "title1"
+    expect(page).to have_content "title2"
+    expect(page).to have_content "title3"
   end
 
   scenario 'User can inspect question and answers' do

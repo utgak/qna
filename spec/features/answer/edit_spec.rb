@@ -74,7 +74,7 @@ feature 'User can edit his answer', %q{
         fill_in 'Link name', with: 'google'
         fill_in 'Url', with: google
         click_on 'Save'
-        page.should have_link 'google'
+        expect(page).to have_link 'google'
       end
     end
 

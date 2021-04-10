@@ -1,9 +1,20 @@
-table
+.errors
+
+.questions
   - @questions.each do |q|
-    tr
-      td= link_to q.title, q
+    .question data-id= q.id
+      = link_to q.title, q
       - if current_user&.author_of?(q)
-        td= link_to 'delete', question_path(q), method: :delete
-        td= link_to 'edit', edit_question_path(q), method: :get
+        span
+          | &nbsp
+          = link_to 'delete', question_path(q), method: :delete
+          | &nbsp
+          = link_to 'edit', edit_question_path(q), method: :get
+      - if current_user
+        p
+          = link_to '+', vote_up_question_path(q), method: :patch, remote: true
+          .voting-result = q.voting_result
+          = link_to '-', vote_down_question_path(q), method: :patch, remote: true
+        hr
 
 p= link_to 'Ask question', new_question_path

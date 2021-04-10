@@ -12,9 +12,9 @@ feature 'User can delete link from his question' do
     end
 
     scenario 'delete link', js: true do
-      page.should have_link link.name
+      expect(page).to have_link link.name
       click_on 'delete link'
-      page.should_not have_link link.name
+      expect(page).to_not have_link link.name
     end
   end
 
@@ -26,8 +26,8 @@ feature 'User can delete link from his question' do
     end
 
     scenario 'delete link', js: true do
-      page.should have_link link.name
-      page.should_not have_link "delete link"
+      expect(page).to have_link link.name
+      expect(page).to_not have_link "delete link"
     end
   end
 end

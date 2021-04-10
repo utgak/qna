@@ -10,6 +10,7 @@ import "channels"
 require("jquery")
 require("@nathanvda/cocoon")
 require('packs/answers.js')
+require('packs/vote.js')
 
 Rails.start()
 Turbolinks.start()
