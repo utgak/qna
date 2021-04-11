@@ -16,7 +16,7 @@ RSpec.shared_examples 'votable' do
   it 'result' do
     5.times { votable.vote_up(create(:user)) }
     3.times { votable.vote_down(create(:user)) }
-    expect(votable.voting_result).to eq(2)
+    expect(votable.voting_result).to eq 2
   end
   
   it 'revote' do
