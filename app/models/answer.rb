@@ -1,4 +1,6 @@
 class Answer < ApplicationRecord
+  include Votable
+
   belongs_to :question
   belongs_to :user
 
@@ -13,12 +15,10 @@ class Answer < ApplicationRecord
   default_scope { order(best: :desc) }
 
   def mark_as_best
-    Answer.transaction do
-      self.question.answers.where(best: true).first&.update!(best: false)
-      self.update!(best: true)
-      unless question.reward.nil?
-        self.question.reward.update!(user: user)
-      end
+    transaction do
+      question.answers.where(best: true).first&.update!(best: false)
+      update!(best: true)
+      question.reward&.update!(user: user)
     end
   end
 end

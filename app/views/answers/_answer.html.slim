@@ -14,7 +14,7 @@
         - else
           li
             =link_to link.name, link.url, target: :_blank, remote: true
-            -if current_user.author_of?(link.linkable)
+            -if current_user&.author_of?(link.linkable)
               =link_to 'delete link', link_path(link), method: :delete, remote: true
 
   .files
@@ -22,6 +22,9 @@
 
   - if current_user&.author_of?(answer.question)
     = link_to 'Set as best', best_answer_path(answer), method: :patch, remote: true
+
+  p
+    = render 'shared/voting', resource: answer
 
   -if current_user&.author_of?(answer) && answer.valid?
     = link_to 'delete', answer_path(answer), method: :delete, remote: true
@@ -36,3 +39,5 @@
         .links
           = link_to_add_association 'add link', f, :links
       = f.submit 'Save'
+
+  hr

@@ -1,3 +1,6 @@
+.answer-errors
+  = render 'shared/errors', resource: @answer
+
 h1= @question.title
 p= @question.body
 
@@ -14,7 +17,7 @@ p= @question.body
         -else
           li
             = link_to link.name, link.url, target: :_blank
-            -if current_user.author_of?(link.linkable)
+            -if current_user&.author_of?(link.linkable)
               = link_to 'delete link', link_path(link), method: :delete, remote: true
 
 .reward
@@ -25,9 +28,6 @@ p= @question.body
 
 .answers
   = render @question.answers
-
-.answer-errors
-  = render 'shared/errors', resource: @answer
 
 = form_with model: [@question, @answer], class: "new-answer", local: false do |f|
   p

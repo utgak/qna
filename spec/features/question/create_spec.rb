@@ -52,8 +52,8 @@ feature 'User can create question', %q{
       click_on 'Ask'
 
       within '.reward' do
-        page.should have_content 'reward name'
-        page.should have_xpath("//img[contains(@src, \"img.png\")]")
+        expect(page).to have_content 'reward name'
+        expect(page).to have_xpath("//img[contains(@src, \"img.png\")]")
       end
     end
   end

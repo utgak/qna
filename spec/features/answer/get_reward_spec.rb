@@ -12,8 +12,8 @@ feature 'User can get a reward for answering' do
       visit question_path(reward.question)
 
       expect(page).to have_content answer.body
-      page.should have_content reward.name
-      page.should have_xpath("//img[contains(@src, \"img.png\")]")
+      expect(page).to have_content reward.name
+      expect(page).to have_xpath("//img[contains(@src, \"img.png\")]")
 
       click_on 'Set as best'
 
@@ -26,9 +26,9 @@ feature 'User can get a reward for answering' do
       sign_in(user)
       visit rewards_path
 
-      page.should have_content reward.question.title
-      page.should have_content reward.name
-      page.should have_xpath("//img[contains(@src, \"img.png\")]")
+      expect(page).to have_content reward.question.title
+      expect(page).to have_content reward.name
+      expect(page).to have_xpath("//img[contains(@src, \"img.png\")]")
     end
   end
 end
