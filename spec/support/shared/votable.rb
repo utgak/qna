@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'votable' do
+  it { should have_many(:votes).dependent(:destroy) }
+
   let(:votable) { create(described_class.to_s.underscore.to_sym) }
 
   it 'vote' do
@@ -33,12 +35,4 @@ RSpec.shared_examples 'votable' do
     votable.vote_up(user)
     expect(votable.errors.full_messages.first).to eq "User have already voted"
   end
-end
-
-RSpec.describe Answer do
-  it_behaves_like 'votable'
-end
-
-RSpec.describe Question do
-  it_behaves_like 'votable'
 end

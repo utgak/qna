@@ -46,11 +46,3 @@ shared_examples 'votable controller' do
     end
   end
 end
-
-RSpec.describe AnswersController, type: :controller do
-  it_behaves_like 'votable controller'
-end
-
-RSpec.describe QuestionsController, type: :controller do
-  it_behaves_like 'votable controller'
-end

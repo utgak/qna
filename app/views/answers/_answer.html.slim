@@ -3,6 +3,7 @@
     -if answer.best
       =render plain: 'This answer marked as the best'
 
+  p= answer.user.email
   p= answer.body
 
   .answer_links
@@ -40,4 +41,12 @@
           = link_to_add_association 'add link', f, :links
       = f.submit 'Save'
 
+  .comments
+    .errors
+    p="Comments:"
+    =render 'shared/errors', resource: @comment
+    - answer.comments.each do |c|
+      p= c.user.email
+      p= c.body
+  =render 'comments/form', commentable: answer
   hr

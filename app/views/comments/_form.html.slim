@@ -1,0 +1,6 @@
+p
+  -if user_signed_in?
+    = form_with model: [commentable, Comment.new], local: false do |f|
+      = f.label :body, 'Your comment:'
+      = f.text_field :body
+      = f.submit 'comment'

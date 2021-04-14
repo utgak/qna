@@ -15,7 +15,9 @@ Rails.application.routes.draw do
   resources :rewards, only: :index
 
   resources :questions, concerns: [:votable] do
+    resources :comments, only: :create
     resources :answers, shallow: true, concerns: [:votable] do
+      resources :comments, only: :create
       patch :best, on: :member
     end
   end
