@@ -1,0 +1,7 @@
+$(".answers").find("[data-id=<%= @comment.commentable.id %>]").children('.errors').html('<%= render 'shared/errors', resource: @comment %>');
+$(".question_comments").children('.errors').html('<%= render 'shared/errors', resource: @comment %>');
+
+<% if @comment.persisted? %>
+  $(".answers").find("[data-id=<%= @comment.commentable.id %>]").children('.comments').append("<p> <%= @comment.user.email %></p><p> <%= @comment.body %></p>")
+  $(".question_comments").append("<p> <%= @comment.user.email %></p><p> <%= @comment.body %></p>")
+<% end %>

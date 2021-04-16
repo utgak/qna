@@ -9,6 +9,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     @answer.save
+    publish_answer
   end
 
   def update
@@ -27,6 +28,14 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def publish_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast(
+      "questions/#{@answer.question.id}/answers",
+      { answer: @answer, author_id: current_user.id }
+    )
+  end
 
   def find_answer
     @answer = Answer.find(params[:id])

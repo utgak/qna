@@ -2,8 +2,10 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :find_question, only: %i[show update edit]
+  before_action :find_question, only: %i[show update edit gon_question]
+  before_action :gon_question, only: :show
 
+  after_action :publish_question, only: [:create]
   def index
     @questions = Question.all
   end
@@ -56,5 +58,17 @@ class QuestionsController < ApplicationController
 
   def find_question
     @question = Question.with_attached_files.find(params[:id])
+  end
+
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast(
+      "questions_channel",
+    @question
+    )
+  end
+
+  def gon_question
+    gon.question_id = @question.id
   end
 end

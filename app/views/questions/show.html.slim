@@ -1,6 +1,7 @@
 .answer-errors
   = render 'shared/errors', resource: @answer
 
+
 h1= @question.title
 p= @question.body
 
@@ -26,7 +27,19 @@ p= @question.body
     = @reward.name
     = image_tag(@reward.img)
 
+.question_comments
+  .errors
+  p="Comments:"
+  =render 'shared/errors', resource: @comment
+  - @question.comments.each do |c|
+    p= c.user.email
+    p= c.body
+
+.question_comments_form
+  =render 'comments/form', commentable: @question
+
 .answers
+  p= "Answers:"
   = render @question.answers
 
 = form_with model: [@question, @answer], class: "new-answer", local: false do |f|
