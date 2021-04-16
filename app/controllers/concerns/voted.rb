@@ -6,12 +6,14 @@ module Voted
   end
 
   def vote_up
-    @votable.vote_up(current_user) unless current_user.author_of?(@votable)
+    authorize! :vote_up, @votable
+    @votable.vote_up(current_user)
     return_json
   end
 
   def vote_down
-    @votable.vote_down(current_user) unless current_user.author_of?(@votable)
+    authorize! :vote_down, @votable
+    @votable.vote_down(current_user)
     return_json
   end
 

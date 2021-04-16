@@ -15,19 +15,19 @@
         - else
           li
             =link_to link.name, link.url, target: :_blank, remote: true
-            -if current_user&.author_of?(link.linkable)
+            -if can?(:destroy, link)
               =link_to 'delete link', link_path(link), method: :delete, remote: true
 
   .files
     = render "file/file", resource: answer
 
-  - if current_user&.author_of?(answer.question)
+  - if can?(:best, answer)
     = link_to 'Set as best', best_answer_path(answer), method: :patch, remote: true
 
   p
     = render 'shared/voting', resource: answer
 
-  -if current_user&.author_of?(answer) && answer.valid?
+  -if can?(:update, answer) && answer.valid? && can?(:destroy, answer)
     = link_to 'delete', answer_path(answer), method: :delete, remote: true
     = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false do |f|

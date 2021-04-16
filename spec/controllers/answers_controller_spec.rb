@@ -57,7 +57,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirects to question' do
         delete :destroy, params: { question_id: question, id: answer.id, format: :js }
-        expect(response).to render_template :destroy
+        expect(response).to have_http_status :forbidden
       end
     end
   end
@@ -120,7 +120,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'render best view' do
         patch :best, params: { id: answer, format: :js }
-        expect(response).to render_template :best
+        expect(response).to have_http_status :forbidden
       end
     end
 
