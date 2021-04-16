@@ -5,6 +5,8 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: %i[update destroy best]
   before_action :authenticate_user!
 
+  authorize_resource
+
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
@@ -13,18 +15,16 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if current_user.author_of?(@answer)
-      @answer.update(answer_params)
-      @question = @answer.question
-    end
+    @answer.update(answer_params)
+    @question = @answer.question
   end
 
   def destroy
-    @answer.destroy if current_user.author_of?(@answer)
+    @answer.destroy
   end
 
   def best
-    @answer.mark_as_best if current_user&.author_of?(@answer.question)
+    @answer.mark_as_best
   end
 
   private

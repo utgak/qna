@@ -4,7 +4,7 @@
   - @questions.each do |q|
     .question data-id= q.id
       = link_to q.title, q
-      - if current_user&.author_of?(q)
+      - if can?(:destroy, q) && can?(:update, q)
         span
           | &nbsp
           = link_to 'delete', question_path(q), method: :delete

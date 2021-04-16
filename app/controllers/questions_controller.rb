@@ -2,8 +2,10 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: %i[index show]
-  before_action :find_question, only: %i[show update edit gon_question]
+  before_action :find_question, only: %i[show update edit destroy gon_question]
   before_action :gon_question, only: :show
+
+  authorize_resource
 
   after_action :publish_question, only: [:create]
   def index
@@ -35,8 +37,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question = Question.find(params[:id])
-    @question.destroy if current_user.author_of?(@question)
+    @question.destroy
     redirect_to questions_path, notice: 'Question deleted'
   end
 
