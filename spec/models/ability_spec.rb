@@ -14,6 +14,12 @@ describe Ability, type: :model do
     it { should_not be_able_to :manage, :all }
   end
 
+  describe 'for admin' do
+    let(:user) { create(:user, admin: true) }
+
+    it { should be_able_to :manage, :all }
+  end
+
   describe 'for user' do
     let(:user) { create :user }
     let(:other) { create :user }
@@ -55,8 +61,8 @@ describe Ability, type: :model do
       question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
       question2 = create(:question, user: other)
       question2.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: 'rails_helper.rb')
-      should be_able_to :destroy, question
-      should_not be_able_to :destroy, question2
+      should be_able_to :destroy, question.files.first
+      should_not be_able_to :destroy, question2.files.first
     end
   end
 end
