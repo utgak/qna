@@ -1,7 +1,20 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   root 'questions#index'
 
   devise_for :users
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [:index] do
+        get :me, on: :collection
+      end
+
+      resources :questions do
+        resources :answers, shallow: true
+      end
+    end
+  end
 
   concern :votable do
     member do

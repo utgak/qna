@@ -9,10 +9,14 @@ class Ability
     @user = user
 
     if user
-      user_abilities
+      user.admin? ? admin_abilities : user_abilities
     else
       guest_abilities
     end
+  end
+
+  def admin_abilities
+    can :manage, :all
   end
 
   def guest_abilities
@@ -25,7 +29,7 @@ class Ability
     can %i[update destroy], [Question, Answer], user_id: @user.id
 
     can :destroy, Link do |link|
-      @user.id == link.linkable.user.id
+      @user.author_of? link.linkable
     end
 
     can %i[vote_up vote_down], [Question, Answer] do |votable|
@@ -33,11 +37,15 @@ class Ability
     end
     
     can :destroy, ActiveStorage::Attachment do |file|
-      @user.id == file.record.user.id
+      @user.author_of? file.record
     end
 
     can :best, Answer do |answer|
-      @user.id == answer.question.user.id
+      @user.author_of? answer.question
+    end
+
+    can :me, User do |profile|
+      profile.id == user.id
     end
   end
 end
