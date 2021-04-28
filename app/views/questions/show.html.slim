@@ -1,6 +1,11 @@
 .answer-errors
   = render 'shared/errors', resource: @answer
 
+p
+  - if @question.subscribed?(current_user)
+    =link_to 'Unsubscribe', unsubscribe_question_subscriptions_path(@question), method: :delete
+  -else
+    =link_to 'Subscribe', subscribe_question_subscriptions_path(@question), method: :post
 
 h1= @question.title
 p= @question.body

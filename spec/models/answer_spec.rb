@@ -16,6 +16,15 @@ RSpec.describe Answer, type: :model do
     expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
+  describe 'subscriptions' do
+    let(:answer) { build(:answer) }
+
+    it 'calls QuestionSubscriptionJob' do
+      expect(QuestionSubscriptionJob).to receive(:perform_later).with(answer)
+      answer.save!
+    end
+  end
+
   describe 'mark answer as best' do
     let!(:answer) { create(:answer) }
     it 'check best method' do

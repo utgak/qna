@@ -27,6 +27,13 @@ class Ability
     guest_abilities
     can :create, [Question, Answer, Comment]
     can %i[update destroy], [Question, Answer], user_id: @user.id
+    can :subscribe, Question do |question|
+      !question.subscribed?(@user)
+    end
+
+    can :unsubscribe, Question do |question|
+      question.subscribed?(@user)
+    end
 
     can :destroy, Link do |link|
       @user.author_of? link.linkable
