@@ -28,6 +28,10 @@ Rails.application.routes.draw do
   resources :rewards, only: :index
 
   resources :questions, concerns: [:votable] do
+    resources :subscriptions, only: [] do
+      post :subscribe, on: :collection
+      delete :unsubscribe, on: :collection
+    end
     resources :comments, only: :create
     resources :answers, shallow: true, concerns: [:votable] do
       resources :comments, only: :create

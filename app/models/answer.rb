@@ -13,6 +13,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  after_create :email_for_subs
+
   default_scope { order(best: :desc) }
 
   def mark_as_best
@@ -21,5 +23,11 @@ class Answer < ApplicationRecord
       update!(best: true)
       question.reward&.update!(user: user)
     end
+  end
+
+  private
+
+  def email_for_subs
+    QuestionSubscriptionJob.perform_later(self)
   end
 end
